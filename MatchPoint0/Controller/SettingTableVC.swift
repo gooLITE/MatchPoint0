@@ -13,21 +13,19 @@ class SettingTableVC: UITableViewController {
     var teamData = TeamData()
     
     var leftName: String{
-        userDefault.string(forKey: "teamData.leftTeamName")!
+        userDefault.string(forKey: "teamData.leftTeamName") ?? "Team Left"
     }
     var rightName: String{
-        userDefault.string(forKey: "teamData.rightTeamName")!
+        userDefault.string(forKey: "teamData.rightTeamName") ?? "Team Right"
     }
-    
     var color1: String{
-        userDefault.string(forKey: "teamData.leftColor")!
+        userDefault.string(forKey: "teamData.leftColor") ?? "#3478F6"
     }
     var color2: String{
-        userDefault.string(forKey: "teamData.rightColor")!
+        userDefault.string(forKey: "teamData.rightColor") ?? "#EB445A"
     }
-    
     var leftScore: Int{
-        userDefault.integer(forKey: "teamData.rightScore")
+        userDefault.integer(forKey: "teamData.leftScore")
     }
     var rightScore: Int{
         userDefault.integer(forKey: "teamData.rightScore")
@@ -54,9 +52,7 @@ class SettingTableVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("in Setting page: ", teamData)
-        //self.userDefault.object(forKey: teamData.leftColor)
-        
+        print("in Setting, \(teamData.scoreToWin)")
         
         leftTeamNameTF.delegate = self
         rightTeamNameTF.delegate = self
@@ -71,49 +67,74 @@ class SettingTableVC: UITableViewController {
         rightColorImage.tintColor = hexStringToUIColor(hex: color2)
         rightScoreStepper.value = Double(teamData.rightScore)
         
-        scoreToWinLabel.text = "\(teamData.scoreToWin) to win"
         scoreToWinStepper.value = Double(teamData.scoreToWin)
+        scoreToWinLabel.text = "\(teamData.scoreToWin) to win"
+        
 
     }
     override func viewWillAppear(_ animated: Bool) {
+        leftTeamNameTF.text = leftName
+        rightTeamNameTF.text = rightName
         
+        leftScoreLabel.text = String(leftScore)
+        rightScoreLabel.text = String(rightScore)
+        
+        leftScoreStepper.value = Double(leftScore)
+        rightScoreStepper.value = Double(rightScore)
+                
         leftColorImage.tintColor = hexStringToUIColor(hex: color1)
         rightColorImage.tintColor = hexStringToUIColor(hex: color2)
         
-        tableView.reloadData()
+        scoreToWinStepper.value = Double(scoreToWin)
+        scoreToWinLabel.text = "\(scoreToWin) to win"
     }
 
     @IBAction func leftStepperPressed(_ sender: UIStepper) {
         leftScoreLabel.text = String(Int(leftScoreStepper.value))
-        userDefault.set(Int(leftScoreStepper.value), forKey: "teamData.leftScore")
+        teamData.leftScore = Int(leftScoreStepper.value)
+        userDefault.set(teamData.leftScore, forKey: "teamData.leftScore")
+        userDefault.synchronize()
     }
     
     
     @IBAction func rightStepperPressed(_ sender: UIStepper) {
         rightScoreLabel.text = String(Int(rightScoreStepper.value))
+        teamData.rightScore = Int(rightScoreStepper.value)
         userDefault.set(Int(rightScoreStepper.value), forKey: "teamData.rightScore")
+        userDefault.synchronize()
     }
     
     @IBAction func scoreToWinStepperPressed(_ sender: UIStepper) {
         scoreToWinLabel.text = "\(Int(scoreToWinStepper.value)) to Win"
-        print(Int(scoreToWinStepper.value))
-        userDefault.set(Int(scoreToWinStepper.value), forKey: "teamData.scoreToWin")
-        print(teamData.scoreToWin)
         teamData.scoreToWin = Int(scoreToWinStepper.value)
+        userDefault.set(Int(scoreToWinStepper.value), forKey: "teamData.scoreToWin")
+        userDefault.synchronize()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationVC = segue.destination as! ColorListTableVC
         destinationVC.teamData = teamData
     }
-    
-    
 }
 
 //MARK: -UITextFieldDelegate
 extension SettingTableVC: UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
+        
+        if textField == leftTeamNameTF{
+            teamData.leftTeamName = textField.text ?? "Team Left"
+            textField.text = "Team Left"
+            userDefault.set(teamData.leftTeamName, forKey: "teamData.leftTeamName")
+            userDefault.synchronize()
+        }
+        
+        if textField == rightTeamNameTF{
+            teamData.rightTeamName = textField.text ?? "Team Right"
+            textField.text = "Team Right"
+            userDefault.set(teamData.rightTeamName, forKey: "teamData.rightTeamName")
+            userDefault.synchronize()
+        }
         return true
     }
     

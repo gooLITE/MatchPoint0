@@ -15,13 +15,13 @@ class HomePageVC: UIViewController {
     var teamData = TeamData()
     
     var color1: String{
-        userDefault.string(forKey: "teamData.leftColor")!
+        userDefault.string(forKey: "teamData.leftColor") ?? "#3478F6"
     }
     var color2: String{
-        userDefault.string(forKey: "teamData.rightColor")!
+        userDefault.string(forKey: "teamData.rightColor") ?? "#EB445A"
     }
     var leftName: String{
-        userDefault.string(forKey: "teamData.leftTeamName")!
+        userDefault.string(forKey: "teamData.leftTeamName") ?? "Team Left"
     }
     var rightName: String{
         userDefault.string(forKey: "teamData.rightTeamName") ?? "Team Right"
@@ -71,20 +71,22 @@ class HomePageVC: UIViewController {
     
     @IBAction func leftScoreAdded(_ sender: UIButton) {
         teamData.leftScore += 1
-        leftTeamScore.text = String(teamData.leftScore)
-        userDefault.set(teamData.leftScore, forKey: "teamData.leftScore")
-        userDefault.synchronize()
         
-        checkWining(score: teamData.leftScore)
+        if checkWining(side: "left", score: teamData.leftScore) == false{
+            leftTeamScore.text = String(teamData.leftScore)
+            userDefault.set(teamData.leftScore, forKey: "teamData.leftScore")
+            userDefault.synchronize()
+        }
     }
     
     @IBAction func rightScoreAdded(_ sender: Any) {
         teamData.rightScore += 1
-        rightTeamScore.text = String(teamData.rightScore)
-        userDefault.set(teamData.rightScore, forKey: "teamData.rightScore")
-        userDefault.synchronize()
         
-        
+        if checkWining(side: "right", score: teamData.rightScore) == false{
+            rightTeamScore.text = String(teamData.rightScore)
+            userDefault.set(teamData.rightScore, forKey: "teamData.rightScore")
+            userDefault.synchronize()
+        }
     }
     
     @IBAction func refreshButtonPressed(_ sender: Any) {
@@ -94,7 +96,6 @@ class HomePageVC: UIViewController {
         rightTeamScore.text = String(teamData.rightScore)
         userDefault.set(teamData.leftScore, forKey: "teamData.leftScore")
         userDefault.set(teamData.rightScore, forKey: "teamData.rightScore")
-      
     }
     
     @IBAction func navToSetting(_ sender: Any) {
@@ -106,16 +107,32 @@ class HomePageVC: UIViewController {
         destinationVC?.teamData = teamData
     }
     
-    func checkWining(score: Int){
-        if score >= scoreToWin{
-            print("score >= scoreToWin")
-        }
-        else{
-            print("no")
-        }
+    func checkWining(side: String, score: Int) -> Bool{
+        print("in checkWinning: \(leftScore), \(rightScore)")
         
-        
+        if side == "left"{
+            if leftScore >= scoreToWin && (leftScore-rightScore >= 2) {
+                print("checking left")
+                let alert = UIAlertController(title: "Congratulation!!", message: "\(leftName) wins!!", preferredStyle: .alert)
+                let confirmAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alert.addAction(confirmAction)
+                present(alert, animated: true, completion: nil)
+                return true
+            }
+        }
+        else if side == "right"{
+            if rightScore >= scoreToWin && (rightScore-leftScore >= 2) {
+                let alert = UIAlertController(title: "Congratulation!!", message: "\(rightName) wins!!", preferredStyle: .alert)
+                let confirmAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alert.addAction(confirmAction)
+                present(alert, animated: true, completion: nil)
+                return true
+            }
+        }
+        return false
     }
+        
+
     
 }
 
