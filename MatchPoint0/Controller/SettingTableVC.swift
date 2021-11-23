@@ -12,6 +12,31 @@ class SettingTableVC: UITableViewController {
     let userDefault = UserDefaults.standard
     var teamData = TeamData()
     
+    var leftName: String{
+        userDefault.string(forKey: "teamData.leftTeamName")!
+    }
+    var rightName: String{
+        userDefault.string(forKey: "teamData.rightTeamName")!
+    }
+    
+    var color1: String{
+        userDefault.string(forKey: "teamData.leftColor")!
+    }
+    var color2: String{
+        userDefault.string(forKey: "teamData.rightColor")!
+    }
+    
+    var leftScore: Int{
+        userDefault.integer(forKey: "teamData.rightScore")
+    }
+    var rightScore: Int{
+        userDefault.integer(forKey: "teamData.rightScore")
+    }
+    var scoreToWin: Int{
+        userDefault.integer(forKey: "teamData.scoreToWin")
+    }
+    
+    
     @IBOutlet weak var leftTeamNameTF: UITextField!
     @IBOutlet weak var leftScoreLabel: UILabel!
     @IBOutlet weak var leftScoreStepper: UIStepper!
@@ -38,24 +63,25 @@ class SettingTableVC: UITableViewController {
         
         leftTeamNameTF.text = teamData.leftTeamName
         leftScoreLabel.text = String(teamData.leftScore)
-        leftColorImage.tintColor = hexStringToUIColor(hex: teamData.leftColor)
+        leftColorImage.tintColor = hexStringToUIColor(hex: color1)
         leftScoreStepper.value = Double(teamData.leftScore)
         
         rightTeamNameTF.text = teamData.rightTeamName
         rightScoreLabel.text = String(teamData.rightScore)
-        rightColorImage.tintColor = hexStringToUIColor(hex: teamData.rightColor)
+        rightColorImage.tintColor = hexStringToUIColor(hex: color2)
         rightScoreStepper.value = Double(teamData.rightScore)
         
         scoreToWinLabel.text = "\(teamData.scoreToWin) to win"
         scoreToWinStepper.value = Double(teamData.scoreToWin)
 
     }
-//    override func viewWillAppear(_ animated: Bool) {
-//        print("Run")
-//        print(teamInfo.leftColor)
-//        print(teamInfo.rightColor)
-//        tableView.reloadData()
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        
+        leftColorImage.tintColor = hexStringToUIColor(hex: color1)
+        rightColorImage.tintColor = hexStringToUIColor(hex: color2)
+        
+        tableView.reloadData()
+    }
 
     @IBAction func leftStepperPressed(_ sender: UIStepper) {
         leftScoreLabel.text = String(Int(leftScoreStepper.value))
@@ -73,6 +99,7 @@ class SettingTableVC: UITableViewController {
         print(Int(scoreToWinStepper.value))
         userDefault.set(Int(scoreToWinStepper.value), forKey: "teamData.scoreToWin")
         print(teamData.scoreToWin)
+        teamData.scoreToWin = Int(scoreToWinStepper.value)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -93,12 +120,14 @@ extension SettingTableVC: UITextFieldDelegate{
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == leftTeamNameTF{
             teamData.leftTeamName = textField.text ?? "Team Left"
-            userDefault.string(forKey: teamData.leftTeamName)
+            userDefault.set(teamData.leftTeamName, forKey: "teamData.leftTeamName")
+            userDefault.synchronize()
         }
         
         if textField == rightTeamNameTF{
             teamData.rightTeamName = textField.text ?? "Team Right"
-            userDefault.string(forKey: teamData.rightTeamName)
+            userDefault.set(teamData.rightTeamName, forKey: "teamData.rightTeamName")
+            userDefault.synchronize()
         }
     }
 }

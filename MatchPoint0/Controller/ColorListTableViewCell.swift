@@ -7,6 +7,11 @@
 
 import UIKit
 
+//
+//protocol ColorListTableViewCellDelegate: AnyObject{
+//    func didClickButton(cell: ColorListTableViewCell)
+//}
+
 class ColorListTableViewCell: UITableViewCell {
 
     @IBOutlet weak var colorName: UILabel!

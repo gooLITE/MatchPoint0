@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3ty-9f-NeC">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3ty-9f-NeC">
     <device id="retina6_1" orientation="landscape" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -32,8 +32,8 @@
                                                     <action selector="leftScoreAdded:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4U4-q2-AuE"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Team Left" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iyk-wN-TXV" userLabel="leftTeamName">
-                                                <rect key="frame" x="150" y="108.5" width="148" height="50"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="123" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iyk-wN-TXV" userLabel="leftTeamName">
+                                                <rect key="frame" x="196" y="108.5" width="56" height="50"/>
                                                 <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="50"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -182,7 +182,7 @@
             <objects>
                 <tableViewController id="S6N-OJ-C2o" customClass="SettingTableVC" customModule="MatchPoint0" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="WnM-vn-99E">
-                        <rect key="frame" x="0.0" y="0.0" width="896" height="626"/>
+                        <rect key="frame" x="0.0" y="0.0" width="896" height="500"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <sections>
@@ -391,6 +391,7 @@
                                                 <constraint firstItem="04F-5a-8fg" firstAttribute="top" secondItem="C8r-Ou-wia" secondAttribute="topMargin" constant="5" id="INX-z2-lOo"/>
                                                 <constraint firstItem="gvZ-Y9-Ayl" firstAttribute="top" secondItem="C8r-Ou-wia" secondAttribute="top" constant="5" id="RBu-2V-feX"/>
                                                 <constraint firstItem="gvZ-Y9-Ayl" firstAttribute="centerY" secondItem="C8r-Ou-wia" secondAttribute="centerY" id="VcP-dY-Hyl"/>
+                                                <constraint firstItem="gvZ-Y9-Ayl" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="04F-5a-8fg" secondAttribute="trailing" constant="8" id="oIE-By-9jj"/>
                                                 <constraint firstItem="04F-5a-8fg" firstAttribute="leading" secondItem="C8r-Ou-wia" secondAttribute="leadingMargin" id="rm0-fd-eqK"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="04F-5a-8fg" secondAttribute="bottom" constant="5" id="tT3-6c-QvE"/>
                                                 <constraint firstAttribute="bottom" secondItem="gvZ-Y9-Ayl" secondAttribute="bottom" constant="5" id="uqK-SI-KOU"/>
@@ -432,7 +433,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="0FF-SQ-9T3"/>
-                    <size key="freeformSize" width="896" height="626"/>
+                    <size key="freeformSize" width="896" height="500"/>
                     <connections>
                         <outlet property="leftColorImage" destination="3mQ-oz-tWj" id="QC8-HF-jeK"/>
                         <outlet property="leftScoreLabel" destination="qny-7g-EVe" id="Y04-gR-p0E"/>
