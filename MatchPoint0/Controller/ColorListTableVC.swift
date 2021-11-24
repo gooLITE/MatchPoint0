@@ -55,9 +55,9 @@ class ColorListTableVC: UITableViewController{
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("selected: \(themeColor[indexPath.row][1]), \(themeColor[indexPath.row][2])")
-        
-        print("before userDefault: \(teamData.leftColor), \(teamData.rightColor)")
+//        print("selected: \(themeColor[indexPath.row][1]), \(themeColor[indexPath.row][2])")
+//        
+//        print("before userDefault: \(teamData.leftColor), \(teamData.rightColor)")
         
         userDefault.set(themeColor[indexPath.row][1], forKey: "teamData.leftColor")
         userDefault.set(themeColor[indexPath.row][2], forKey: "teamData.rightColor")
@@ -66,14 +66,14 @@ class ColorListTableVC: UITableViewController{
         teamData.leftColor = themeColor[indexPath.row][1]
         teamData.rightColor = themeColor[indexPath.row][1]
         
-        print("after saved: \(teamData.leftColor), \(teamData.rightColor)")
+//        print("after saved: \(teamData.leftColor), \(teamData.rightColor)")
         
         self.navigationController?.popViewController(animated: true)
         
         //find plist path: /Users/nicole/Library/Developer/CoreSimulator/Devices/22B31B22-7925-491A-81A8-54005E3011A1/data/Containers/Data/Application/EC6EE646-37ED-4961-A1B0-348DECACA0E6/Library/Preferences
-//        var path: [AnyObject] = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true) as [AnyObject]
-//        let folder: String = path[0] as! String
-//        NSLog("Your NSUserDefaults are stored in this folder: %@/Preferences", folder)
+        var path: [AnyObject] = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true) as [AnyObject]
+        let folder: String = path[0] as! String
+        NSLog("Your NSUserDefaults are stored in this folder: %@/Preferences", folder)
 
         
         //prepare(for: UIStoryboardSegue, sender: Any?)

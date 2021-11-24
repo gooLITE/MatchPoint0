@@ -52,8 +52,6 @@ class SettingTableVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("in Setting, \(teamData.scoreToWin)")
-        
         leftTeamNameTF.delegate = self
         rightTeamNameTF.delegate = self
         
@@ -124,14 +122,14 @@ extension SettingTableVC: UITextFieldDelegate{
         
         if textField == leftTeamNameTF{
             teamData.leftTeamName = textField.text ?? "Team Left"
-            textField.text = "Team Left"
+            //textField.text = "Team Left"
             userDefault.set(teamData.leftTeamName, forKey: "teamData.leftTeamName")
             userDefault.synchronize()
         }
         
         if textField == rightTeamNameTF{
             teamData.rightTeamName = textField.text ?? "Team Right"
-            textField.text = "Team Right"
+            //textField.text = "Team Right"
             userDefault.set(teamData.rightTeamName, forKey: "teamData.rightTeamName")
             userDefault.synchronize()
         }

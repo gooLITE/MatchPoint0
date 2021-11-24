@@ -15,6 +15,8 @@ struct TeamData{
     var leftColor: String
     var rightColor: String
     var scoreToWin: Int
+    var win: Bool
+    var winningTeam: String
     
     init(){
         leftScore = 0
@@ -24,6 +26,8 @@ struct TeamData{
         leftColor = "#3478F6"
         rightColor = "#EB445A"
         scoreToWin = 25
+        win = false
+        winningTeam = "no"
     }
 }
 

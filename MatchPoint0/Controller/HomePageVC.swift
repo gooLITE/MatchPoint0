@@ -35,7 +35,13 @@ class HomePageVC: UIViewController {
     var scoreToWin: Int{
         userDefault.integer(forKey: "teamData.scoreToWin")
     }
-    
+    var win: Bool{
+        userDefault.bool(forKey: "teamData.win")
+    }
+    var winningTeam: String{
+        userDefault.string(forKey: "teamData.winningTeam") ?? "no"
+    }
+        
     @IBOutlet weak var leftTeamName: UILabel!
     @IBOutlet weak var rightTeamName: UILabel!
     @IBOutlet weak var leftTeamScore: UILabel!
@@ -43,9 +49,14 @@ class HomePageVC: UIViewController {
     @IBOutlet weak var leftButton: UIButton!
     @IBOutlet weak var rightButton: UIButton!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        teamData.leftScore = userDefault.integer(forKey: "teamData.leftScore")
+        teamData.rightScore = userDefault.integer(forKey: "teamData.rightScore")
+        
+        print(teamData.leftScore, teamData.rightScore)
+        print(leftScore, rightScore)
+
         // Do any additional setup after loading the view.
         leftTeamName.text = teamData.leftTeamName
         rightTeamName.text = teamData.rightTeamName
@@ -58,11 +69,14 @@ class HomePageVC: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        teamData.leftScore = userDefault.integer(forKey: "teamData.leftScore")
+        teamData.rightScore = userDefault.integer(forKey: "teamData.rightScore")
+        
         leftTeamName.text = leftName
         rightTeamName.text = rightName
         
-        leftTeamScore.text = String(leftScore)
-        rightTeamScore.text = String(rightScore)
+        leftTeamScore.text = String(teamData.leftScore)
+        rightTeamScore.text = String(teamData.rightScore)
         
         leftButton.backgroundColor = hexStringToUIColor(hex: color1)
         rightButton.backgroundColor = hexStringToUIColor(hex: color2)
@@ -70,22 +84,60 @@ class HomePageVC: UIViewController {
     
     
     @IBAction func leftScoreAdded(_ sender: UIButton) {
+        teamData.leftScore = userDefault.integer(forKey: "teamData.leftScore")
         teamData.leftScore += 1
         
-        if checkWining(side: "left", score: teamData.leftScore) == false{
+        
+        if win == false{
             leftTeamScore.text = String(teamData.leftScore)
-            userDefault.set(teamData.leftScore, forKey: "teamData.leftScore")
-            userDefault.synchronize()
+            
+            if checkWining(side: "left", score: teamData.leftScore) == false{
+                userDefault.set(teamData.leftScore, forKey: "teamData.leftScore")
+                userDefault.synchronize()
+            }
+        }
+        else{
+            if winningTeam == "left"{
+                let alert = UIAlertController(title: "Congratulation!!", message: "\(leftName) wins!!", preferredStyle: .alert)
+                let confirmAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alert.addAction(confirmAction)
+                present(alert, animated: true, completion: nil)
+            }
+            else{
+                let alert = UIAlertController(title: "Another game!!", message: "\(rightName) wins!!", preferredStyle: .alert)
+                let confirmAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alert.addAction(confirmAction)
+                present(alert, animated: true, completion: nil)
+            }
         }
     }
     
     @IBAction func rightScoreAdded(_ sender: Any) {
+        teamData.rightScore = userDefault.integer(forKey: "teamData.rightScore")
         teamData.rightScore += 1
         
-        if checkWining(side: "right", score: teamData.rightScore) == false{
+        
+        if win == false{
             rightTeamScore.text = String(teamData.rightScore)
-            userDefault.set(teamData.rightScore, forKey: "teamData.rightScore")
-            userDefault.synchronize()
+            
+            if checkWining(side: "right", score: teamData.rightScore) == false{
+                userDefault.set(teamData.rightScore, forKey: "teamData.rightScore")
+                userDefault.synchronize()
+            }
+        }
+        else{
+            if winningTeam == "right"{
+                let alert = UIAlertController(title: "Congratulation!!", message: "\(rightName) wins!!", preferredStyle: .alert)
+                let confirmAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alert.addAction(confirmAction)
+                present(alert, animated: true, completion: nil)
+            }
+            else{
+                let alert = UIAlertController(title: "Another game!!", message: "\(leftName) wins!!", preferredStyle: .alert)
+                let confirmAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alert.addAction(confirmAction)
+                present(alert, animated: true, completion: nil)
+            }
         }
     }
     
@@ -96,6 +148,8 @@ class HomePageVC: UIViewController {
         rightTeamScore.text = String(teamData.rightScore)
         userDefault.set(teamData.leftScore, forKey: "teamData.leftScore")
         userDefault.set(teamData.rightScore, forKey: "teamData.rightScore")
+        userDefault.set(false, forKey: "teamData.win")
+        userDefault.set("no", forKey: "teamData.winningTeam")
     }
     
     @IBAction func navToSetting(_ sender: Any) {
@@ -108,24 +162,37 @@ class HomePageVC: UIViewController {
     }
     
     func checkWining(side: String, score: Int) -> Bool{
-        print("in checkWinning: \(leftScore), \(rightScore)")
-        
+        print("in checkWinning: \(teamData.leftScore), \(teamData.rightScore)")
         if side == "left"{
-            if leftScore >= scoreToWin && (leftScore-rightScore >= 2) {
+            if teamData.leftScore >= scoreToWin && (teamData.leftScore-teamData.rightScore >= 2) {
                 print("checking left")
                 let alert = UIAlertController(title: "Congratulation!!", message: "\(leftName) wins!!", preferredStyle: .alert)
                 let confirmAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                 alert.addAction(confirmAction)
                 present(alert, animated: true, completion: nil)
+                
+                userDefault.set(true, forKey: "teamData.win")
+                userDefault.set("left", forKey: "teamData.winningTeam")
+                userDefault.synchronize()
+                
+                print(win, winningTeam)
+                
                 return true
             }
         }
         else if side == "right"{
-            if rightScore >= scoreToWin && (rightScore-leftScore >= 2) {
+            if teamData.rightScore >= scoreToWin && (teamData.rightScore-teamData.leftScore >= 2) {
                 let alert = UIAlertController(title: "Congratulation!!", message: "\(rightName) wins!!", preferredStyle: .alert)
                 let confirmAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                 alert.addAction(confirmAction)
                 present(alert, animated: true, completion: nil)
+                
+                userDefault.set(true, forKey: "teamData.win")
+                userDefault.set("right", forKey: "teamData.winningTeam")
+                userDefault.synchronize()
+                
+                print(win, winningTeam)
+                
                 return true
             }
         }
